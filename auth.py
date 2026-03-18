@@ -11,7 +11,9 @@ from flask_login import login_user, logout_user, login_required, current_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
-from app import db, login_manager
+from models import db
+from flask_login import LoginManager
+login_manager = LoginManager()
 from app.models import Usuario, TIPOS_VALIDOS
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')

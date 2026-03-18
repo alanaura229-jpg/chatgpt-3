@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from app import db
-from app.models import Usuario, Vacante, DiagnosticoCompetencias, Postulacion
-from app.forms import VacanteForm
+from models import db
+from models import Usuario, Vacante, DiagnosticoCompetencias, Postulacion
+from forms import VacanteForm
 from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
