@@ -1,0 +1,121 @@
+{% extends "auth/base_auth.html" %}
+{% block title %}Registro Coordinación — BTU UASLP{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2><i class="fas fa-university" style="color:var(--uaslp-cyan);margin-right:10px;"></i>Registro de Coordinación</h2>
+    <p class="subtitle">Registro para Facultades, Áreas y Programas Académicos de la UASLP.</p>
+
+    <form method="POST">
+
+        <p class="section-title"><i class="fas fa-sitemap"></i> Datos de la entidad académica</p>
+        <div class="form-group">
+            <label>Tipo de entidad *</label>
+            <select name="tipo_entidad" id="tipo_entidad" required onchange="mostrarCampos()">
+                <option value="">Seleccione...</option>
+                <option value="facultad">Facultad</option>
+                <option value="area">Área</option>
+                <option value="programa">Programa Académico</option>
+            </select>
+        </div>
+
+        <div id="campo_facultad" class="form-group" style="display:none;">
+            <label>Nombre de la Facultad *</label>
+            <input type="text" name="facultad" placeholder="Ej. Facultad de Ingeniería">
+        </div>
+
+        <div id="campo_area" class="form-group" style="display:none;">
+            <label>Nombre del Área *</label>
+            <input type="text" name="area" placeholder="Ej. Área de Ciencias Sociales y Humanidades">
+        </div>
+
+        <div id="campo_programa" class="form-group" style="display:none;">
+            <label>Nombre del Programa Académico *</label>
+            <input type="text" name="programa_academico" placeholder="Ej. Licenciatura en Derecho">
+        </div>
+
+        <div class="form-group">
+            <label>Nombre oficial de la coordinación *</label>
+            <input type="text" name="nombre_coord" required placeholder="Ej. Coordinación de Servicios Escolares">
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-user-tie"></i> Datos del responsable</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre(s) *</label>
+                <input type="text" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label>Apellido Paterno *</label>
+                <input type="text" name="apellido_paterno" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Apellido Materno</label>
+                <input type="text" name="apellido_materno">
+            </div>
+            <div class="form-group">
+                <label>Cargo *</label>
+                <input type="text" name="cargo" required placeholder="Ej. Coordinador, Jefe de Área...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Teléfono / Extensión</label>
+            <input type="tel" name="telefono">
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-key"></i> Datos de acceso</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Clave Única Institucional *</label>
+                <input type="text" name="clave_unica" required>
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico institucional *</label>
+                <input type="email" name="email" required placeholder="coordinacion@uaslp.mx">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Contraseña * <small>(mín. 8 caracteres)</small></label>
+                <input type="password" name="password" required minlength="8">
+            </div>
+            <div class="form-group">
+                <label>Confirmar Contraseña *</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="form-check">
+            <input type="checkbox" id="privacidad" name="aceptar_privacidad" required>
+            <label for="privacidad">Acepto el <a href="#" style="color:var(--uaslp-cyan);">Aviso de Privacidad</a> y los términos de uso de la plataforma BTU-UASLP. *</label>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-user-plus"></i> Registrar Coordinación
+        </button>
+    </form>
+
+    <div class="auth-links">
+        ¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('auth.registro_selector') }}">Cambiar tipo de registro</a>
+    </div>
+</div>
+
+<script>
+function mostrarCampos() {
+    const tipo = document.getElementById('tipo_entidad').value;
+    document.getElementById('campo_facultad').style.display  = tipo === 'facultad'  ? 'block' : 'none';
+    document.getElementById('campo_area').style.display      = tipo === 'area'      ? 'block' : 'none';
+    document.getElementById('campo_programa').style.display  = tipo === 'programa'  ? 'block' : 'none';
+}
+</script>
+{% endblock %}

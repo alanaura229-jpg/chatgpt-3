@@ -1,0 +1,102 @@
+{% extends "auth/base_auth.html" %}
+{% block title %}Registro Empresa — BTU UASLP{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2><i class="fas fa-building" style="color:var(--uaslp-cyan);margin-right:10px;"></i>Registro de Empresa / Empleador</h2>
+    <p class="subtitle">Las empresas requieren validación previa por parte de la UASLP antes de poder publicar vacantes.</p>
+
+    <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:12px 16px;margin-bottom:22px;font-size:.88em;color:#856404;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Nota:</strong> Tu registro quedará pendiente de validación por la coordinación de Vinculación Laboral de la UASLP. Recibirás notificación cuando tu cuenta sea activada.
+    </div>
+
+    <form method="POST">
+
+        <p class="section-title"><i class="fas fa-building"></i> Datos de la empresa</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre / Razón Social *</label>
+                <input type="text" name="nombre_empresa" required>
+            </div>
+            <div class="form-group">
+                <label>RFC *</label>
+                <input type="text" name="rfc_empresa" required placeholder="Ej. EMP210101ABC">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Giro / Sector de la empresa *</label>
+            <input type="text" name="giro_empresa" required placeholder="Ej. Tecnología, Manufactura, Servicios...">
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-user-tie"></i> Datos del contacto representante</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre(s) del contacto *</label>
+                <input type="text" name="nombre_contacto" required>
+            </div>
+            <div class="form-group">
+                <label>Apellido Paterno *</label>
+                <input type="text" name="apellido_paterno" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Apellido Materno</label>
+                <input type="text" name="apellido_materno">
+            </div>
+            <div class="form-group">
+                <label>Puesto en la organización *</label>
+                <input type="text" name="puesto" required placeholder="Ej. Gerente de RH">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Teléfono *</label>
+            <input type="tel" name="telefono" required>
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-key"></i> Datos de acceso</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Identificador único * <small>(RFC del representante o clave interna)</small></label>
+                <input type="text" name="clave_unica" required>
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico corporativo *</label>
+                <input type="email" name="email" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Contraseña * <small>(mín. 8 caracteres)</small></label>
+                <input type="password" name="password" required minlength="8">
+            </div>
+            <div class="form-group">
+                <label>Confirmar Contraseña *</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="form-check">
+            <input type="checkbox" id="privacidad" name="aceptar_privacidad" required>
+            <label for="privacidad">Acepto el <a href="#" style="color:var(--uaslp-cyan);">Aviso de Privacidad</a> y los <a href="#" style="color:var(--uaslp-cyan);">Términos de uso</a> de la plataforma BTU-UASLP. *</label>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-paper-plane"></i> Enviar solicitud de registro
+        </button>
+    </form>
+
+    <div class="auth-links">
+        ¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('auth.registro_selector') }}">Cambiar tipo de registro</a>
+    </div>
+</div>
+{% endblock %}

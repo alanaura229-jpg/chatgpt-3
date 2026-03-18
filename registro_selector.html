@@ -1,0 +1,53 @@
+{% extends "auth/base_auth.html" %}
+{% block title %}Tipo de Registro — BTU UASLP{% endblock %}
+
+{% block content %}
+<div class="auth-card" style="max-width:820px;">
+    <h2><i class="fas fa-user-plus" style="color:var(--uaslp-cyan);margin-right:10px;"></i>Crear cuenta</h2>
+    <p class="subtitle">Selecciona el tipo de registro que corresponde a tu perfil.</p>
+
+    <div class="registro-grid">
+
+        <a href="{{ url_for('auth.registro_alumno') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-user-graduate"></i></div>
+            <span class="label">Alumno</span>
+            <span class="desc">Estudiante activo de la UASLP con clave única institucional.</span>
+        </a>
+
+        <a href="{{ url_for('auth.registro_egresado') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="label">Egresado</span>
+            <span class="desc">Profesionista que concluyó sus estudios en la UASLP.</span>
+        </a>
+
+        <a href="{{ url_for('auth.registro_persona', nacionalidad='mexicana') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-id-card"></i></div>
+            <span class="label">Persona Mexicana</span>
+            <span class="desc">Ciudadano mexicano externo a la UASLP.</span>
+        </a>
+
+        <a href="{{ url_for('auth.registro_persona', nacionalidad='extranjera') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-globe-americas"></i></div>
+            <span class="label">Persona Extranjera</span>
+            <span class="desc">Ciudadano de otro país interesado en vacantes.</span>
+        </a>
+
+        <a href="{{ url_for('auth.registro_empresa') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-building"></i></div>
+            <span class="label">Empresa / Empleador</span>
+            <span class="desc">Organización que desea publicar vacantes (requiere validación).</span>
+        </a>
+
+        <a href="{{ url_for('auth.registro_coordinacion') }}" class="registro-option">
+            <div class="icon"><i class="fas fa-university"></i></div>
+            <span class="label">Coordinación</span>
+            <span class="desc">Facultad, Área o Programa Académico de la UASLP.</span>
+        </a>
+
+    </div>
+
+    <div class="auth-links" style="margin-top:30px;">
+        ¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión aquí</a>
+    </div>
+</div>
+{% endblock %}

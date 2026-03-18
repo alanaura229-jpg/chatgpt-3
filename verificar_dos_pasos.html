@@ -1,0 +1,26 @@
+{% extends "auth/base_auth.html" %}
+{% block title %}Verificación en Dos Pasos — BTU UASLP{% endblock %}
+
+{% block content %}
+<div class="auth-card" style="max-width:420px;">
+    <h2><i class="fas fa-shield-alt" style="color:var(--uaslp-cyan);margin-right:10px;"></i>Verificación en Dos Pasos</h2>
+    <p class="subtitle">Ingresa el código de 6 dígitos enviado a tu correo electrónico. El código expira en 10 minutos.</p>
+
+    <form method="POST" action="{{ url_for('auth.verificar_dos_pasos') }}">
+        <div class="form-group">
+            <label for="codigo"><i class="fas fa-key"></i> Código de verificación</label>
+            <input type="text" id="codigo" name="codigo" placeholder="000000"
+                   maxlength="6" pattern="\d{6}" required
+                   style="font-size:1.6em;letter-spacing:10px;text-align:center;font-weight:700;">
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-check-circle"></i> Verificar y entrar
+        </button>
+    </form>
+
+    <div class="auth-links">
+        <a href="{{ url_for('auth.login') }}"><i class="fas fa-arrow-left"></i> Volver al inicio de sesión</a>
+    </div>
+</div>
+{% endblock %}

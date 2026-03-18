@@ -1,0 +1,151 @@
+{% extends "auth/base_auth.html" %}
+{% block title %}Registro Egresado — BTU UASLP{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2><i class="fas fa-graduation-cap" style="color:var(--uaslp-cyan);margin-right:10px;"></i>Registro de Egresado</h2>
+    <p class="subtitle">Profesionista que concluyó sus estudios en la UASLP.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <p class="section-title"><i class="fas fa-key"></i> Datos de acceso</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Clave Única Institucional *</label>
+                <input type="text" name="clave_unica" required>
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico *</label>
+                <input type="email" name="email" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Contraseña * <small>(mín. 8 caracteres)</small></label>
+                <input type="password" name="password" required minlength="8">
+            </div>
+            <div class="form-group">
+                <label>Confirmar Contraseña *</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-user"></i> Datos personales</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre(s) *</label>
+                <input type="text" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label>Apellido Paterno *</label>
+                <input type="text" name="apellido_paterno" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Apellido Materno</label>
+                <input type="text" name="apellido_materno">
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" name="telefono">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Sexo</label>
+                <select name="sexo">
+                    <option value="">Seleccione</option>
+                    <option>Hombre</option>
+                    <option>Mujer</option>
+                    <option>Prefiero no decir</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Edad</label>
+                <input type="number" name="edad" min="18" max="99">
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-university"></i> Perfil académico</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Carrera / Programa *</label>
+                <input type="text" name="carrera" required>
+            </div>
+            <div class="form-group">
+                <label>Facultad</label>
+                <input type="text" name="facultad">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Año de Egreso</label>
+                <input type="number" name="anio_egreso" min="1980" max="2030">
+            </div>
+            <div class="form-group">
+                <label>Cédula Profesional</label>
+                <input type="text" name="cedula_profesional" placeholder="Si aplica">
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-briefcase"></i> Perfil profesional</p>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Empresa donde labora actualmente</label>
+                <input type="text" name="nombre_empresa">
+            </div>
+            <div class="form-group">
+                <label>Puesto actual</label>
+                <input type="text" name="puesto">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Experiencia Laboral <small>(describe brevemente tus empleos anteriores)</small></label>
+            <textarea name="experiencia_laboral" placeholder="Empresa — Puesto — Periodo&#10;Empresa — Puesto — Periodo"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Certificaciones</label>
+                <textarea name="certificaciones" placeholder="Ej. AWS Cloud Practitioner, PMP, etc." style="min-height:60px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Especializaciones / Posgrados</label>
+                <textarea name="especializaciones" placeholder="Maestría, Doctorado, Diplomado, etc." style="min-height:60px;"></textarea>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <p class="section-title"><i class="fas fa-file-pdf"></i> Currículum Vitae</p>
+        <div class="form-group">
+            <label>Subir CV <small>(PDF, DOC o DOCX — máx. 5 MB)</small></label>
+            <input type="file" name="cv" accept=".pdf,.doc,.docx">
+            <small>Podrás actualizarlo desde tu perfil en cualquier momento.</small>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="form-check">
+            <input type="checkbox" id="privacidad" name="aceptar_privacidad" required>
+            <label for="privacidad">Acepto el <a href="#" style="color:var(--uaslp-cyan);">Aviso de Privacidad</a> y el tratamiento de mis datos. *</label>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-user-plus"></i> Crear cuenta de Egresado
+        </button>
+    </form>
+
+    <div class="auth-links">
+        ¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('auth.registro_selector') }}">Cambiar tipo de registro</a>
+    </div>
+</div>
+{% endblock %}
