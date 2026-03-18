@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil — BTU UASLP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --blue:#003366; --cyan:#00A9E0; --light:#F5F5F5; --white:#fff; --text:#333; --border:#E0E0E0; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:var(--light); }
+        .topbar { background:var(--blue); color:#fff; padding:14px 30px; display:flex; justify-content:space-between; align-items:center; }
+        .topbar .brand { font-size:1.3em; font-weight:700; text-decoration:none; color:#fff; }
+        .topbar nav a { color:#fff; text-decoration:none; margin-left:18px; font-size:.9em; opacity:.85; }
+        .main { max-width:760px; margin:36px auto; padding:0 20px; }
+        .card { background:var(--white); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,.09); padding:30px 34px; margin-bottom:22px; }
+        .card h3 { color:var(--blue); font-size:1.1em; margin-bottom:20px; border-bottom:2px solid var(--cyan); padding-bottom:8px; display:flex; align-items:center; gap:8px; }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .form-group { margin-bottom:16px; }
+        .form-group label { display:block; font-size:.86em; font-weight:700; color:var(--text); margin-bottom:5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:5px; font-size:.93em; font-family:inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--cyan); }
+        .form-group textarea { resize:vertical; min-height:75px; }
+        .form-group input[readonly] { background:#f8f8f8; color:#888; }
+        .toggle-row { display:flex; align-items:center; gap:14px; padding:10px 0; }
+        .toggle-row label { font-size:.9em; color:var(--text); }
+        .toggle { position:relative; width:44px; height:24px; }
+        .toggle input { opacity:0; width:0; height:0; }
+        .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#ccc; border-radius:24px; transition:.3s; }
+        .slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.3s; }
+        input:checked + .slider { background:var(--blue); }
+        input:checked + .slider:before { transform:translateX(20px); }
+        .btn-save { background:var(--blue); color:#fff; border:none; padding:12px 28px; border-radius:6px; font-size:.95em; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+        .btn-save:hover { background:#0055A5; }
+        .alert { padding:10px 16px; border-radius:6px; margin-bottom:16px; font-size:.9em; }
+        .alert-success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+        .cv-current { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--light); border-radius:6px; margin-bottom:10px; font-size:.88em; color:#555; }
+        .cv-current i { color:var(--cyan); font-size:1.2em; }
+        .back-link { display:inline-flex; align-items:center; gap:6px; color:var(--blue); text-decoration:none; font-size:.88em; margin-bottom:18px; }
+        .back-link:hover { text-decoration:underline; }
+        @media(max-width:580px) { .form-row { grid-template-columns:1fr; } .card { padding:22px 18px; } }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="{{ url_for('main.index') }}" class="brand"><i class="fas fa-university"></i> BTU — UASLP</a>
+    <nav>
+        <a href="{{ url_for('main.dashboard') }}"><i class="fas fa-home"></i> Panel</a>
+        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </nav>
+</div>
+
+<div class="main">
+    <a href="{{ url_for('main.dashboard') }}" class="back-link"><i class="fas fa-arrow-left"></i> Volver al panel</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}"><i class="fas fa-check-circle"></i> {{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <!-- Datos generales (solo lectura) -->
+        <div class="card">
+            <h3><i class="fas fa-user"></i> Datos Personales</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" value="{{ current_user.nombre_completo() }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Usuario</label>
+                    <input type="text" value="{{ current_user.tipo_usuario | replace('_',' ') | capitalize }}" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" value="{{ current_user.email }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Clave Única</label>
+                    <input type="text" value="{{ current_user.clave_unica }}" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" name="telefono" value="{{ current_user.telefono or '' }}" placeholder="444 000 0000">
+            </div>
+        </div>
+
+        <!-- Datos profesionales (egresados / personas) -->
+        {% if current_user.tipo_usuario in ('egresado','persona_mexicana','persona_extranjera','alumno') %}
+        <div class="card">
+            <h3><i class="fas fa-briefcase"></i> Información Profesional</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Empresa donde labora actualmente</label>
+                    <input type="text" name="nombre_empresa" value="{{ current_user.nombre_empresa or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>Puesto actual</label>
+                    <input type="text" name="puesto" value="{{ current_user.puesto or '' }}">
+                </div>
+            </div>
+            {% if current_user.tipo_usuario == 'egresado' %}
+            <div class="form-group">
+                <label>Experiencia Laboral</label>
+                <textarea name="experiencia_laboral" placeholder="Empresa — Puesto — Periodo">{{ current_user.experiencia_laboral or '' }}</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Certificaciones</label>
+                    <textarea name="certificaciones" style="min-height:60px;">{{ current_user.certificaciones or '' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Especializaciones</label>
+                    <textarea name="especializaciones" style="min-height:60px;">{{ current_user.especializaciones or '' }}</textarea>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- CV -->
+        {% if current_user.tipo_usuario in ('alumno','egresado','persona_mexicana','persona_extranjera') %}
+        <div class="card">
+            <h3><i class="fas fa-file-alt"></i> Currículum Vitae</h3>
+            {% if current_user.cv_filename %}
+            <div class="cv-current">
+                <i class="fas fa-file-pdf"></i>
+                <span>CV cargado: <strong>{{ current_user.cv_filename }}</strong></span>
+                <a href="{{ url_for('static', filename='uploads/cvs/' + current_user.cv_filename) }}" target="_blank" style="color:var(--cyan);margin-left:auto;">
+                    <i class="fas fa-eye"></i> Ver CV
+                </a>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label>{% if current_user.cv_filename %}Reemplazar CV{% else %}Subir CV{% endif %} <small>(PDF, DOC o DOCX — máx. 5 MB)</small></label>
+                <input type="file" name="cv" accept=".pdf,.doc,.docx">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Seguridad -->
+        <div class="card">
+            <h3><i class="fas fa-shield-alt"></i> Seguridad</h3>
+            <div class="toggle-row">
+                <label class="toggle">
+                    <input type="checkbox" name="dos_pasos_activo" {% if current_user.dos_pasos_activo %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+                <label>Verificación en dos pasos <small style="color:#888;">(se enviará un código a tu correo al iniciar sesión)</small></label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-save">
+            <i class="fas fa-save"></i> Guardar cambios
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

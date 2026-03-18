@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTU - UASLP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --uaslp-blue: #003366;
+            --uaslp-light-blue: #0055A5;
+            --uaslp-cyan: #00A9E0;
+            --gray-light: #F5F5F5;
+            --gray-medium: #E0E0E0;
+            --text-dark: #333333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Top Bar - Gray */
+        .top-bar {
+            background: var(--gray-light);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-medium);
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .top-bar-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+
+        .top-bar-link:hover {
+            color: var(--uaslp-blue);
+        }
+
+        .top-bar-link i {
+            color: var(--uaslp-blue);
+        }
+
+        /* Main Header - Blue */
+        .main-header {
+            background: var(--uaslp-blue);
+            padding: 15px 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-image {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+    color: var(--white);
+    text-decoration: none;
+}
+
+        .logo-text h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text p {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 5px;
+        }
+
+        .header-nav a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 18px;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .header-nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .header-nav a.active {
+            background: var(--uaslp-cyan);
+        }
+
+        /* Navigation Bar - White */
+        .nav-bar {
+            background: var(--white);
+            border-bottom: 3px solid var(--uaslp-cyan);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 18px 22px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--uaslp-blue);
+            border-bottom-color: var(--uaslp-cyan);
+            background: var(--gray-light);
+        }
+
+        .nav-search {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--uaslp-blue);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+            font-size: 0.9em;
+            width: 200px;
+        }
+
+        .search-box button {
+            background: var(--uaslp-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: var(--uaslp-light-blue);
+        }
+
+        .btn-login {
+            background: var(--uaslp-cyan);
+            color: var(--white);
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background: var(--uaslp-light-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 51, 102, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)),
+                        url('https://www.uaslp.mx/images/banners/banner-principal.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero h2 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.95;
+        }
+
+        .btn-hero {
+            padding: 15px 40px;
+            background: var(--uaslp-cyan);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn-hero:hover {
+            background: var(--uaslp-light-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-hero-outline {
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn-hero-outline:hover {
+            background: var(--white);
+            color: var(--uaslp-blue);
+        }
+
+        /* Features */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 35px 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--uaslp-cyan);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--uaslp-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--white);
+            font-size: 1.8em;
+        }
+
+        .feature-card h3 {
+            color: var(--uaslp-blue);
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--uaslp-blue);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            margin: 5px 0;
+        }
+
+        .footer-tagline {
+            color: var(--uaslp-cyan);
+            font-weight: 600;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .header-content,
+            .nav-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-search {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-box input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-content {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .logo-text h1 {
+                font-size: 1.4em;
+            }
+
+            .hero h2 {
+                font-size: 2em;
+            }
+
+            .btn-hero,
+            .btn-hero-outline {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <a href="#" class="top-bar-link">
+                <i class="fas fa-envelope"></i>
+                <span>Correo</span>
+            </a>
+            <a href="#" class="top-bar-link">
+                <i class="fas fa-address-book"></i>
+                <span>Directorio</span>
+            </a>
+        </div>
+    </div>
+
+<!-- Main Header -->
+<header class="main-header">
+    <div class="header-content">
+        <div class="logo-section">
+            <!-- 👇 Logo con ruta Flask correcta 👇 -->
+            <img src="{{ url_for('static', filename='img/logo-btu.png.png') }}" 
+                 alt="BTU UASLP Logo" 
+                 class="logo-image">
+            
+            <!-- 👇 Texto del logo como enlace 👇 -->
+            <a href="{{ url_for('main.index') }}" class="logo-text">
+                <h1>BTU</h1>
+                <p>Bolsa de Trabajo Universitaria</p>
+            </a>
+            <nav class="header-nav">
+                <a href="{{ url_for('main.estudiantes') }}" class="active">Estudiantes</a>
+                <a href="{{ url_for('main.egresados') }}">Egresados</a>
+                <a href="{{ url_for('main.empleadores') }}">Empleadores</a>
+                <a href="{{ url_for('main.coordinaciones') }}">Coordinaciones</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <ul class="nav-menu">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="{{ url_for('main.vacantes') }}"><i class="fas fa-briefcase"></i> Vacantes</a></li>
+                <li><a href="{{ url_for('main.diagnostico') }}"><i class="fas fa-chart-line"></i> Diagnóstico</a></li>
+                <li><a href="{{ url_for('main.empresas') }}"><i class="fas fa-building"></i> Empresas</a></li>
+                <li><a href="{{ url_for('main.nosotros') }}"><i class="fas fa-info-circle"></i> Nosotros</a></li>
+            </ul>
+            <div class="nav-search">
+                <div class="search-box">
+                    <input type="text" placeholder="Buscar vacantes...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <a href="/auth/login" class="btn-login" style="text-decoration:none;">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión / Registrarse
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Conectamos tu Talento con las Mejores Oportunidades</h2>
+        <p>Plataforma exclusiva para estudiantes y egresados de la Universidad Autónoma de San Luis Potosí</p>
+        <div>
+            <a href="/auth/registro" class="btn-hero" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fas fa-user-plus"></i> Registrarse
+            </a>
+            <a href="/vacantes" class="btn-hero-outline" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fas fa-search"></i> Ver Vacantes
+            </a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <h3>Vacantes Validadas</h3>
+            <p>Oportunidades laborales verificadas y aprobadas por la universidad</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h3>Diagnóstico SIDCE</h3>
+            <p>Evaluación integral de 125 reactivos para identificar tus competencias</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Protección de Datos</h3>
+            <p>Tu información segura bajo normativa de privacidad institucional</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h3>Vinculación Empresarial</h3>
+            <p>Conexión directa con empresas líderes del sector</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-university"></i> UASLP
+            </div>
+            <p><strong>Bolsa de Trabajo Universitaria</strong></p>
+            <p>Universidad Autónoma de San Luis Potosí</p>
+            <p>Vinculación Laboral y Desarrollo Profesional</p>
+            <div class="footer-tagline">
+                <i class="fas fa-heart"></i> Siempre Autónoma, Siempre UASLP
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

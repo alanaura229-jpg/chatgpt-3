@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Vacante — BTU UASLP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{--blue:#003366;--cyan:#00A9E0;--light:#F5F5F5;--white:#fff;--border:#E0E0E0;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Segoe UI',sans-serif;background:var(--light);}
+        .topbar{background:var(--blue);color:#fff;padding:14px 30px;display:flex;justify-content:space-between;align-items:center;}
+        .topbar .brand{font-size:1.3em;font-weight:700;text-decoration:none;color:#fff;}
+        .topbar nav a{color:#fff;text-decoration:none;margin-left:18px;font-size:.9em;opacity:.85;}
+        .main{max-width:700px;margin:36px auto;padding:0 20px;}
+        .card{background:var(--white);border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.09);padding:30px 34px;margin-bottom:22px;}
+        .card h2{color:var(--blue);font-size:1.3em;margin-bottom:22px;border-bottom:2px solid var(--cyan);padding-bottom:8px;}
+        .form-group{margin-bottom:16px;}
+        .form-group label{display:block;font-size:.86em;font-weight:700;color:#333;margin-bottom:5px;}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:5px;font-size:.93em;font-family:inherit;}
+        .form-group textarea{resize:vertical;min-height:90px;}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+        .btn-save{background:var(--blue);color:#fff;border:none;padding:12px 28px;border-radius:6px;font-size:.95em;font-weight:700;cursor:pointer;}
+        .btn-save:hover{background:#0055A5;}
+        .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--blue);text-decoration:none;font-size:.88em;margin-bottom:18px;}
+    </style>
+</head>
+<body>
+<div class="topbar">
+    <a href="{{ url_for('main.index') }}" class="brand"><i class="fas fa-university"></i> BTU — UASLP</a>
+    <nav>
+        <a href="{{ url_for('main.dashboard') }}"><i class="fas fa-home"></i> Panel</a>
+        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </nav>
+</div>
+<div class="main">
+    <a href="{{ url_for('main.dashboard') }}" class="back-link"><i class="fas fa-arrow-left"></i> Volver al panel</a>
+    <div class="card">
+        <h2><i class="fas fa-plus-circle" style="color:var(--cyan);margin-right:8px;"></i>Nueva Vacante</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for cat, msg in messages %}
+            <div style="padding:10px 14px;border-radius:6px;margin-bottom:14px;background:#fff3cd;color:#856404;border:1px solid #ffc107;font-size:.9em;">{{ msg }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label>{{ form.titulo.label }}</label>
+                {{ form.titulo(placeholder="Ej. Desarrollador Full Stack Jr.") }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.descripcion.label }}</label>
+                {{ form.descripcion(placeholder="Describe las responsabilidades del puesto...") }}
+            </div>
+            <div class="form-group">
+                <label>{{ form.requisitos.label }}</label>
+                {{ form.requisitos(placeholder="Requisitos técnicos y académicos...") }}
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>{{ form.carrera_requerida.label }}</label>
+                    {{ form.carrera_requerida(placeholder="Ej. Ingeniería en Sistemas") }}
+                </div>
+                <div class="form-group">
+                    <label>{{ form.experiencia_anos.label }}</label>
+                    {{ form.experiencia_anos() }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>{{ form.salario_min.label }}</label>
+                    {{ form.salario_min(placeholder="0.00") }}
+                </div>
+                <div class="form-group">
+                    <label>{{ form.salario_max.label }}</label>
+                    {{ form.salario_max(placeholder="0.00") }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>{{ form.modalidad.label }}</label>
+                    {{ form.modalidad() }}
+                </div>
+                <div class="form-group">
+                    <label>{{ form.ubicacion.label }}</label>
+                    {{ form.ubicacion(placeholder="Ej. San Luis Potosí, SLP") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{ form.tipo_contrato.label }}</label>
+                {{ form.tipo_contrato(placeholder="Ej. Tiempo completo, Por proyecto...") }}
+            </div>
+            {{ form.submit(class="btn-save") }}
+        </form>
+    </div>
+</div>
+</body>
+</html>

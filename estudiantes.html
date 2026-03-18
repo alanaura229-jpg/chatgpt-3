@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudiantes - BTU UASLP</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --dark-blue: #003d80;
+            --light-blue: #e3f2fd;
+            --accent-blue: #2196f3;
+            --gold: #C5A059;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        /* Header Styles */
+        .top-bar {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            margin: 0 10px;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+        
+        .btn-login {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 8px 25px;
+        }
+        
+        .btn-login:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        /* User Type Cards */
+        .user-type-card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-blue);
+            height: 100%;
+        }
+        
+        .user-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .user-icon {
+            width: 100px;
+            height: 100px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .user-icon i {
+            font-size: 45px;
+            color: var(--primary-blue);
+        }
+        
+        .user-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .user-text {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .btn-user {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 10px 35px;
+            font-weight: 600;
+        }
+        
+        .btn-user:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+        
+        /* Benefits Section */
+        .benefits-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateX(10px);
+            background-color: var(--primary-blue);
+        }
+        
+        .benefit-item:hover .benefit-icon i,
+        .benefit-item:hover .benefit-title,
+        .benefit-item:hover .benefit-text {
+            color: white;
+        }
+        
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .benefit-icon i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .benefit-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .benefit-text {
+            color: #666;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        
+        /* Steps Section */
+        .steps-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 60px 0;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .step-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background-color: var(--gold);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+        }
+        
+        .step-title {
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .step-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+        }
+        
+        /* Resources Section */
+        .resources-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .resource-card {
+            background: var(--light-blue);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            background: var(--primary-blue);
+        }
+        
+        .resource-card:hover .resource-icon i,
+        .resource-card:hover .resource-title,
+        .resource-card:hover .resource-text {
+            color: white;
+        }
+        
+        .resource-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .resource-icon i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .resource-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .resource-text {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Stats */
+        .stat-box {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 60px 0;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .btn-cta {
+            background-color: var(--gold);
+            color: white;
+            border-radius: 30px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .btn-cta:hover {
+            background-color: #b8954e;
+            color: white;
+        }
+        
+        .btn-secondary-cta {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 30px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .btn-secondary-cta:hover {
+            background-color: white;
+            color: var(--primary-blue);
+        }
+        
+        /* Section Title */
+        .section-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            background: var(--light-blue);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 0 20px 20px;
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--gold);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+        
+        /* Form Controls Focus */
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="#" class="text-white me-3"><i class="fas fa-envelope"></i> Correo</a>
+                    <a href="#" class="text-white"><i class="fas fa-book"></i> Directorio</a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" height="30">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <strong style="color: var(--primary-blue);">BTU</strong>
+                <span style="color: #666; font-size: 0.9rem;">| Bolsa de Trabajo Universitaria</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.vacantes') }}">Vacantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.diagnostico') }}">Diagnóstico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.empresas') }}">Empresas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.nosotros') }}">Nosotros</a>
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-login ms-3">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-user-graduate"></i> Área de Estudiantes</h1>
+                    <p class="lead mb-0">Tu puerta de entrada al mundo profesional comienza aquí</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="badge bg-light text-dark p-3">
+                        <i class="fas fa-certificate"></i> UASLP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="hero-title">
+                        <i class="fas fa-rocket"></i> Impulsa Tu Futuro Profesional
+                    </h2>
+                    <p class="hero-text">
+                        Como estudiante de la UASLP, tienes acceso exclusivo a las mejores oportunidades 
+                        laborales, prácticas profesionales y servicios de vinculación empresarial.
+                    </p>
+                    <p class="hero-text">
+                        La BTU te acompaña desde tu primer semestre hasta tu inserción laboral, 
+                        proporcionándote herramientas, diagnóstico de competencias y conexión directa 
+                        con empresas líderes.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-cta">
+                            <i class="fas fa-user-plus"></i> Registrarme
+                        </a>
+                        <a href="{{ url_for('main.vacantes') }}" class="btn btn-secondary-cta" style="background-color: var(--primary-blue); color: white; border: 2px solid var(--primary-blue);">
+                            <i class="fas fa-briefcase"></i> Ver Vacantes
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" class="img-fluid" style="max-width: 400px;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <div class="stat-number">2,340</div>
+                    <div class="stat-label">Estudiantes Registrados</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Vacantes Disponibles</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Tasa de Colocación</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Empresas Aliadas</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Type Cards -->
+        <h2 class="section-title">
+            <i class="fas fa-path"></i> ¿Qué Tipo de Estudiante Eres?
+        </h2>
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="user-type-card">
+                    <div class="user-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="user-title">Estudiante Activo</h3>
+                    <p class="user-text">
+                        Cursando actualmente tu licenciatura o ingeniería en la UASLP. 
+                        Buscas prácticas profesionales, servicio social o tu primer empleo.
+                    </p>
+                    <a href="#" class="btn btn-user">
+                        <i class="fas fa-arrow-right"></i> Comenzar
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="user-type-card">
+                    <div class="user-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="user-title">Próximo a Egresar</h3>
+                    <p class="user-text">
+                        En tu último año de carrera. Preparándote para la transición 
+                        al mundo laboral con todas las herramientas necesarias.
+                    </p>
+                    <a href="#" class="btn btn-user">
+                        <i class="fas fa-arrow-right"></i> Comenzar
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="user-type-card">
+                    <div class="user-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="user-title">Egresado Reciente</h3>
+                    <p class="user-text">
+                        Recién titulado. Buscas tu primera oportunidad profesional 
+                        con el respaldo de la certificación UASLP.
+                    </p>
+                    <a href="#" class="btn btn-user">
+                        <i class="fas fa-arrow-right"></i> Comenzar
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Benefits Section -->
+        <h2 class="section-title">
+            <i class="fas fa-star"></i> Beneficios para Estudiantes
+        </h2>
+        <div class="benefits-section mb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Búsqueda de Vacantes</h4>
+                            <p class="benefit-text">Acceso a oportunidades laborales verificadas y exclusivas para estudiantes UASLP</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Diagnóstico SIDCE</h4>
+                            <p class="benefit-text">Evaluación gratuita de 125 reactivos para identificar tus competencias profesionales</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Certificación</h4>
+                            <p class="benefit-text">Obtén un certificado oficial que valida tus competencias ante empleadores</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Prácticas Profesionales</h4>
+                            <p class="benefit-text">Gestión y seguimiento de tus prácticas profesionales y servicio social</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Talleres y Capacitación</h4>
+                            <p class="benefit-text">Acceso a talleres de desarrollo de habilidades blandas y técnicas</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h4 class="benefit-title">Asesoría Personalizada</h4>
+                            <p class="benefit-text">Orientación profesional individualizada para tu desarrollo de carrera</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Steps Section -->
+        <div class="steps-section">
+            <div class="container">
+                <h2 class="text-center mb-5">
+                    <i class="fas fa-list-ol"></i> Pasos para Comenzar
+                </h2>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h4 class="step-title">Regístrate</h4>
+                            <p class="step-text">Crea tu cuenta con tus datos universitarios y matrícula</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h4 class="step-title">Completa tu Perfil</h4>
+                            <p class="step-text">Agrega tu CV, información académica y competencias</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h4 class="step-title">Realiza el Diagnóstico</h4>
+                            <p class="step-text">Completa la evaluación SIDCE de 125 reactivos</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <h4 class="step-title">Aplica a Vacantes</h4>
+                            <p class="step-text">Postúlate a las oportunidades que te interesen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resources Section -->
+        <h2 class="section-title">
+            <i class="fas fa-folder-open"></i> Recursos Disponibles
+        </h2>
+        <div class="resources-section mb-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h4 class="resource-title">Guía de CV</h4>
+                        <p class="resource-text">Plantillas y consejos para crear un currículum profesional efectivo</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4 class="resource-title">Entrevistas</h4>
+                        <p class="resource-text">Preparación para entrevistas de trabajo y preguntas frecuentes</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h4 class="resource-title">Webinars</h4>
+                        <p class="resource-text">Sesiones en vivo con expertos en desarrollo profesional</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h4 class="resource-title">Blog Laboral</h4>
+                        <p class="resource-text">Artículos sobre tendencias del mercado laboral y consejos</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h4 class="resource-title">Eventos</h4>
+                        <p class="resource-text">Ferias de empleo, workshops y encuentros con empresas</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4 class="resource-title">Soporte</h4>
+                        <p class="resource-text">Atención personalizada para resolver tus dudas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <h2 class="section-title">
+            <i class="fas fa-question-circle"></i> Preguntas Frecuentes
+        </h2>
+        <div class="faq-section mb-5">
+            <div class="faq-item">
+                <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    ¿El registro es gratuito?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse" id="faq1">
+                    <div class="faq-answer">
+                        Sí, el registro en la BTU es completamente gratuito para todos los estudiantes activos de la UASLP. 
+                        Solo necesitas tu matrícula universitaria y correo institucional.
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    ¿Puedo aplicar a vacantes desde mi primer semestre?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse" id="faq2">
+                    <div class="faq-answer">
+                        Sí, puedes registrarte desde tu primer semestre. Algunas vacantes son específicas para 
+                        estudiantes avanzados, pero también hay oportunidades de prácticas y becas para estudiantes de primeros semestres.
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    ¿Qué es el diagnóstico SIDCE?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse" id="faq3">
+                    <div class="faq-answer">
+                        El SIDCE es el Sistema de Diagnóstico de Competencias Empresariales. Es una evaluación de 125 reactivos 
+                        que mide tus competencias profesionales, técnicas y personales. Al completarlo, recibes un certificado 
+                        que valida tus habilidades ante los empleadores.
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    ¿Cómo actualizo mi CV en la plataforma?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse" id="faq4">
+                    <div class="faq-answer">
+                        Una vez registrado, puedes acceder a tu perfil y subir tu CV en formato PDF. 
+                        Te recomendamos actualizarlo cada vez que completes nuevos cursos, certificaciones o experiencias laborales.
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    ¿La BTU me garantiza empleo?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse" id="faq5">
+                    <div class="faq-answer">
+                        La BTU no garantiza empleo, pero te proporciona las herramientas, oportunidades y conexión 
+                        con empresas para maximizar tus posibilidades de inserción laboral. El 89% de nuestros 
+                        estudiantes registrados consiguen empleo en los primeros 6 meses después de egresar.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section text-center">
+            <div class="container">
+                <h2 class="mb-4"><i class="fas fa-rocket"></i> ¿Listo para Comenzar?</h2>
+                <p class="lead mb-4">Únete a miles de estudiantes que ya están impulsando su futuro profesional</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#" class="btn btn-cta">
+                        <i class="fas fa-user-plus"></i> Registrarme Ahora
+                    </a>
+                    <a href="{{ url_for('main.vacantes') }}" class="btn btn-secondary-cta">
+                        <i class="fas fa-briefcase"></i> Explorar Vacantes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" height="40" class="me-2"> BTU</h5>
+                    <p class="small">Bolsa de Trabajo Universitaria<br>Universidad Autónoma de San Luis Potosí</p>
+                    <p class="small text-white-50">Vinculación Laboral y Desarrollo Profesional</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('main.vacantes') }}">Vacantes</a></li>
+                        <li><a href="{{ url_for('main.diagnostico') }}">Diagnóstico SIDCE</a></li>
+                        <li><a href="{{ url_for('main.empresas') }}">Empresas</a></li>
+                        <li><a href="{{ url_for('main.nosotros') }}">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Av. Manuel Nava #201, Zona Universitaria</li>
+                        <li><i class="fas fa-phone me-2"></i> (444) 826 2345</li>
+                        <li><i class="fas fa-envelope me-2"></i> btu@uaslp.mx</li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0 small">© 2024 BTU UASLP - Siempre Autónoma, Siempre UASLP</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

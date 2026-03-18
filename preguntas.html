@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico SIDCE - BTU UASLP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --dark-blue: #003d80;
+            --light-blue: #e3f2fd;
+            --gold: #C5A059;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        /* Header Styles */
+        .top-bar {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-link { color: #333; font-weight: 500; }
+        .nav-link:hover { color: var(--primary-blue); }
+        .nav-link.active { color: var(--primary-blue); }
+        
+        .btn-login {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 8px 25px;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        /* Progress Container */
+        .progress-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+            background-color: var(--light-blue);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-blue), var(--gold));
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .question-number {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        /* Options */
+        .option-card {
+            background: var(--light-blue);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-card:hover {
+            border-color: var(--primary-blue);
+            background: #d0e8ff;
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .option-card input[type="radio"] {
+            display: none;
+        }
+        
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn-prev {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 25px;
+            padding: 12px 35px;
+        }
+        
+        .btn-next {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 12px 35px;
+        }
+        
+        .btn-submit {
+            background-color: var(--gold);
+            color: white;
+            border-radius: 25px;
+            padding: 12px 35px;
+        }
+        
+        /* Competency Indicators */
+        .competency-indicator {
+            display: inline-block;
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Timer */
+        .timer-badge {
+            background: var(--gold);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        /* Question Map */
+        .question-map {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .question-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .question-dot.pending {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+        
+        .question-dot.answered {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .question-dot.current {
+            background: var(--gold);
+            color: white;
+            border: 2px solid var(--gold);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer a { color: white; text-decoration: none; }
+        .footer a:hover { color: var(--gold); }
+        
+        /* Warning Modal */
+        .warning-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .warning-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .question-card { padding: 25px; }
+            .question-text { font-size: 1.1rem; }
+            .nav-buttons { flex-direction: column; gap: 10px; }
+            .nav-buttons button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="#" class="text-white me-3"><i class="fas fa-envelope"></i> Correo</a>
+                    <a href="#" class="text-white"><i class="fas fa-book"></i> Directorio</a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" height="30">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <strong style="color: var(--primary-blue);">BTU</strong>
+                <span style="color: #666; font-size: 0.9rem;">| Bolsa de Trabajo Universitaria</span>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.vacantes') }}">Vacantes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.diagnostico') }}">Diagnóstico</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.empresas') }}">Empresas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.nosotros') }}">Nosotros</a></li>
+                </ul>
+                <a href="#" class="btn btn-login ms-3">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-clipboard-check"></i> Diagnóstico SIDCE</h1>
+                    <p class="lead mb-0">125 preguntas para evaluar tus competencias profesionales</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="timer-badge">
+                        <i class="fas fa-clock"></i> <span id="timer">90:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Container -->
+        <div class="progress-container">
+            <div class="progress-info">
+                <span><strong>Progreso:</strong> <span id="progress-text">0/125</span></span>
+                <span><strong>Competencia:</strong> <span id="current-competency">-</span></span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="mt-3">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle"></i> 
+                    Tiempo estimado: 90 minutos | Puedes pausar y continuar después
+                </small>
+            </div>
+        </div>
+        
+        <!-- Question Map -->
+        <div class="question-map">
+            <h5 class="mb-3"><i class="fas fa-map"></i> Mapa de Preguntas</h5>
+            <div id="question-map-container">
+                <!-- Se genera con JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Question Card -->
+        <div class="question-card" id="question-card">
+            <div class="question-number">
+                Pregunta <span id="question-number">1</span> de 125
+            </div>
+            
+            <div class="competency-indicator">
+                <i class="fas fa-brain"></i> <span id="competency-name">Cargando...</span>
+            </div>
+            
+            <div class="question-text" id="question-text">
+                Cargando pregunta...
+            </div>
+            
+            <div class="options-container" id="options-container">
+                <!-- Las opciones se generan con JavaScript -->
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" id="btn-prev" onclick="prevQuestion()">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn btn-submit" id="btn-submit" onclick="submitDiagnostic()" style="display: none;">
+                    <i class="fas fa-check-circle"></i> Finalizar Diagnóstico
+                </button>
+            </div>
+        </div>
+        
+        <!-- Info Box -->
+        <div class="alert alert-info">
+            <h6><i class="fas fa-lightbulb"></i> Consejos para el Diagnóstico</h6>
+            <ul class="mb-0">
+                <li>Responde con honestidad, no hay respuestas correctas o incorrectas</li>
+                <li>El diagnóstico mide tus competencias, no te evalúa como persona</li>
+                <li>Puedes navegar entre preguntas usando el mapa o los botones</li>
+                <li>Al finalizar recibirás un reporte detallado con recomendaciones</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Warning Modal -->
+    <div class="warning-modal" id="warning-modal">
+        <div class="warning-content">
+            <i class="fas fa-exclamation-triangle" style="font-size: 50px; color: var(--gold);"></i>
+            <h4 class="mt-3">¿Estás seguro de finalizar?</h4>
+            <p class="text-muted">No podrás modificar tus respuestas después de enviar el diagnóstico.</p>
+            <div class="mt-4">
+                <button class="btn btn-secondary me-2" onclick="closeWarningModal()">Cancelar</button>
+                <button class="btn btn-submit" onclick="confirmSubmit()">Sí, Finalizar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>BTU UASLP</h5>
+                    <p class="small">Bolsa de Trabajo Universitaria<br>Universidad Autónoma de San Luis Potosí</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('main.vacantes') }}">Vacantes</a></li>
+                        <li><a href="{{ url_for('main.diagnostico') }}">Diagnóstico</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <p class="small">
+                        <i class="fas fa-envelope"></i> btu@uaslp.mx<br>
+                        <i class="fas fa-phone"></i> (444) 826 2345
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================================
+        // BASE DE DATOS DE 125 PREGUNTAS
+        // ============================================
+        const questions = [
+            // COMPETENCIA 1: COMUNICACIÓN ORAL (Preguntas 1-13)
+            { id: 1, competencia: "Comunicación Oral", texto: "Cuando debo presentar un proyecto ante un grupo, me siento:", opciones: ["Muy nervioso/a", "Algo nervioso/a", "Neutral", "Cómodo/a", "Muy cómodo/a"] },
+            { id: 2, competencia: "Comunicación Oral", texto: "Al explicar una idea compleja, suelo:", opciones: ["Confundirme", "Tener dificultades", "Ser claro con esfuerzo", "Ser claro", "Ser muy claro y convincente"] },
+            { id: 3, competencia: "Comunicación Oral", texto: "En reuniones de equipo, mi participación es:", opciones: ["Nula", "Mínima", "Moderada", "Activa", "Muy activa y líder"] },
+            { id: 4, competencia: "Comunicación Oral", texto: "Cuando alguien no entiende mi explicación:", opciones: ["Me frustro", "Me cuesta repetir", "Lo intento de nuevo", "Busco otra forma", "Adapto mi mensaje perfectamente"] },
+            { id: 5, competencia: "Comunicación Oral", texto: "Mi tono de voz al hablar en público es:", opciones: ["Muy bajo", "Bajo", "Normal", "Adecuado", "Muy adecuado y variado"] },
+            { id: 6, competencia: "Comunicación Oral", texto: "El contacto visual con mi audiencia es:", opciones: ["Nulo", "Mínimo", "Ocasional", "Frecuente", "Constante y efectivo"] },
+            { id: 7, competencia: "Comunicación Oral", texto: "Al hacer preguntas en clase o reuniones:", opciones: ["Nunca pregunto", "Casi nunca", "A veces", "Frecuentemente", "Siempre con claridad"] },
+            { id: 8, competencia: "Comunicación Oral", texto: "Mi lenguaje corporal al comunicar es:", opciones: ["Muy cerrado", "Cerrado", "Neutral", "Abierto", "Muy abierto y expresivo"] },
+            { id: 9, competencia: "Comunicación Oral", texto: "Cuando debato un tema, suelo:", opciones: ["Evitarlo", "Participar poco", "Argumentar regularmente", "Argumentar bien", "Persuadir efectivamente"] },
+            { id: 10, competencia: "Comunicación Oral", texto: "La retroalimentación que doy a otros es:", opciones: ["Nula", "Poco clara", "A veces clara", "Clara", "Muy clara y constructiva"] },
+            { id: 11, competencia: "Comunicación Oral", texto: "Al narrar una experiencia, logro:", opciones: ["Confundir", "Ser aburrido", "Ser entendible", "Ser interesante", "Captar totalmente la atención"] },
+            { id: 12, competencia: "Comunicación Oral", texto: "Mi vocabulario al hablar es:", opciones: ["Muy limitado", "Limitado", "Normal", "Amplio", "Muy amplio y preciso"] },
+            { id: 13, competencia: "Comunicación Oral", texto: "Cuando improvisar un discurso, me siento:", opciones: ["Muy inseguro/a", "Inseguro/a", "Neutral", "Seguro/a", "Muy seguro/a"] },
+            
+            // COMPETENCIA 2: COMUNICACIÓN ESCRITA (Preguntas 14-25)
+            { id: 14, competencia: "Comunicación Escrita", texto: "Al redactar un correo formal, reviso:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre detalladamente"] },
+            { id: 15, competencia: "Comunicación Escrita", texto: "Mi ortografía en documentos es:", opciones: ["Muy deficiente", "Deficiente", "Regular", "Buena", "Excelente"] },
+            { id: 16, competencia: "Comunicación Escrita", texto: "La estructura de mis escritos es:", opciones: ["Desorganizada", "Poco clara", "Aceptable", "Clara", "Muy bien estructurada"] },
+            { id: 17, competencia: "Comunicación Escrita", texto: "Al escribir reportes, incluyo:", opciones: ["Mínima información", "Pocos datos", "Datos básicos", "Datos completos", "Análisis completo"] },
+            { id: 18, competencia: "Comunicación Escrita", texto: "Mis documentos son:", opciones: ["Muy largos", "Extensos", "Adecuados", "Concisos", "Muy concisos y claros"] },
+            { id: 19, competencia: "Comunicación Escrita", texto: "La gramática en mis textos es:", opciones: ["Muy deficiente", "Deficiente", "Regular", "Buena", "Excelente"] },
+            { id: 20, competencia: "Comunicación Escrita", texto: "Al escribir, considero al lector:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 21, competencia: "Comunicación Escrita", texto: "Mis resúmenes son:", opciones: ["Incompletos", "Poco claros", "Aceptables", "Claros", "Muy precisos"] },
+            { id: 22, competencia: "Comunicación Escrita", texto: "El formato de mis documentos es:", opciones: ["Desordenado", "Básico", "Aceptable", "Profesional", "Muy profesional"] },
+            { id: 23, competencia: "Comunicación Escrita", texto: "Al escribir emails, el asunto es:", opciones: ["Nulo", "Poco claro", "Regular", "Claro", "Muy descriptivo"] },
+            { id: 24, competencia: "Comunicación Escrita", texto: "Reviso mis escritos antes de enviar:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 25, competencia: "Comunicación Escrita", texto: "Mi capacidad de síntesis escrita es:", opciones: ["Muy baja", "Baja", "Media", "Alta", "Muy alta"] },
+            
+            // COMPETENCIA 3: TRABAJO EN EQUIPO (Preguntas 26-37)
+            { id: 26, competencia: "Trabajo en Equipo", texto: "En proyectos grupales, mi rol es:", opciones: ["Pasivo", "Observador", "Participante", "Activo", "Líder natural"] },
+            { id: 27, competencia: "Trabajo en Equipo", texto: "Escucho las ideas de mis compañeros:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre activamente"] },
+            { id: 28, competencia: "Trabajo en Equipo", texto: "Ante conflictos en el equipo:", opciones: ["Los evito", "Me alejo", "Los enfrento mal", "Los resuelvo", "Los transformo en oportunidades"] },
+            { id: 29, competencia: "Trabajo en Equipo", texto: "Comparto información con el equipo:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre abiertamente"] },
+            { id: 30, competencia: "Trabajo en Equipo", texto: "Acepto críticas de compañeros:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Muy bien constructivamente"] },
+            { id: 31, competencia: "Trabajo en Equipo", texto: "Ayudo a compañeros con dificultades:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 32, competencia: "Trabajo en Equipo", texto: "Celebro los logros del equipo:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre entusiastamente"] },
+            { id: 33, competencia: "Trabajo en Equipo", texto: "Mi compromiso con metas grupales es:", opciones: ["Nulo", "Bajo", "Medio", "Alto", "Muy alto"] },
+            { id: 34, competencia: "Trabajo en Equipo", texto: "La comunicación en equipo la mantengo:", opciones: ["Nula", "Mínima", "Regular", "Buena", "Excelente"] },
+            { id: 35, competencia: "Trabajo en Equipo", texto: "Respeto diferentes opiniones:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre totalmente"] },
+            { id: 36, competencia: "Trabajo en Equipo", texto: "Contribuyo equitativamente al trabajo:", opciones: ["Muy poco", "Poco", "Regular", "Bien", "Totalmente"] },
+            { id: 37, competencia: "Trabajo en Equipo", texto: "Genero ambiente positivo en el equipo:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            
+            // COMPETENCIA 4: LIDERAZGO (Preguntas 38-48)
+            { id: 38, competencia: "Liderazgo", texto: "Asumo responsabilidades de liderazgo:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 39, competencia: "Liderazgo", texto: "Motivo a otros a alcanzar metas:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre efectivamente"] },
+            { id: 40, competencia: "Liderazgo", texto: "Tomo decisiones bajo presión:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Muy bien"] },
+            { id: 41, competencia: "Liderazgo", texto: "Delego tareas apropiadamente:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre estratégicamente"] },
+            { id: 42, competencia: "Liderazgo", texto: "Reconozco el mérito de otros:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre generosamente"] },
+            { id: 43, competencia: "Liderazgo", texto: "Establezco visión clara para el grupo:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 44, competencia: "Liderazgo", texto: "Manejo situaciones de crisis:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 45, competencia: "Liderazgo", texto: "Desarrollo el potencial de otros:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre activamente"] },
+            { id: 46, competencia: "Liderazgo", texto: "Comunico expectativas claramente:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 47, competencia: "Liderazgo", texto: "Inspiro confianza en el equipo:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 48, competencia: "Liderazgo", texto: "Asumo consecuencias de decisiones:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre totalmente"] },
+            
+            // COMPETENCIA 5: RESOLUCIÓN DE PROBLEMAS (Preguntas 49-60)
+            { id: 49, competencia: "Resolución de Problemas", texto: "Ante un problema complejo, yo:", opciones: ["Me paralizo", "Me estreso", "Lo enfrento", "Lo analizo", "Lo resuelvo sistemáticamente"] },
+            { id: 50, competencia: "Resolución de Problemas", texto: "Identifico causas raíz de problemas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 51, competencia: "Resolución de Problemas", texto: "Genero múltiples soluciones:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre creativamente"] },
+            { id: 52, competencia: "Resolución de Problemas", texto: "Evaluo opciones antes de decidir:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre analíticamente"] },
+            { id: 53, competencia: "Resolución de Problemas", texto: "Implemento soluciones efectivamente:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 54, competencia: "Resolución de Problemas", texto: "Aprendo de problemas pasados:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre sistemáticamente"] },
+            { id: 55, competencia: "Resolución de Problemas", texto: "Priorizo problemas por urgencia:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 56, competencia: "Resolución de Problemas", texto: "Busco información para resolver:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre exhaustivamente"] },
+            { id: 57, competencia: "Resolución de Problemas", texto: "Considero consecuencias de soluciones:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 58, competencia: "Resolución de Problemas", texto: "Adapto soluciones al contexto:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 59, competencia: "Resolución de Problemas", texto: "Documento procesos de solución:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 60, competencia: "Resolución de Problemas", texto: "Mantengo calma al resolver problemas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            
+            // COMPETENCIA 6: PENSAMIENTO CRÍTICO (Preguntas 61-71)
+            { id: 61, competencia: "Pensamiento Crítico", texto: "Cuestiono información recibida:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre analíticamente"] },
+            { id: 62, competencia: "Pensamiento Crítico", texto: "Analizo argumentos lógicamente:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 63, competencia: "Pensamiento Crítico", texto: "Identifico sesgos en información:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 64, competencia: "Pensamiento Crítico", texto: "Evaluo fuentes de información:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre críticamente"] },
+            { id: 65, competencia: "Pensamiento Crítico", texto: "Formulo conclusiones basadas en evidencia:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 66, competencia: "Pensamiento Crítico", texto: "Reconozco mis propios sesgos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 67, competencia: "Pensamiento Crítico", texto: "Considero múltiples perspectivas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 68, competencia: "Pensamiento Crítico", texto: "Distingo hechos de opiniones:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 69, competencia: "Pensamiento Crítico", texto: "Detecto falacias en argumentos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 70, competencia: "Pensamiento Crítico", texto: "Tomo decisiones razonadas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 71, competencia: "Pensamiento Crítico", texto: "Reflexiono antes de concluir:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            
+            // COMPETENCIA 7: ADAPTABILIDAD (Preguntas 72-82)
+            { id: 72, competencia: "Adaptabilidad", texto: "Me adapto a cambios repentinos:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 73, competencia: "Adaptabilidad", texto: "Acepto nuevas formas de trabajar:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 74, competencia: "Adaptabilidad", texto: "Aprendo nuevas tecnologías rápido:", opciones: ["Muy lento", "Lento", "Normal", "Rápido", "Muy rápido"] },
+            { id: 75, competencia: "Adaptabilidad", texto: "Manejo la incertidumbre:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 76, competencia: "Adaptabilidad", texto: "Me ajusto a diferentes culturas:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 77, competencia: "Adaptabilidad", texto: "Cambio de prioridad fácilmente:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 78, competencia: "Adaptabilidad", texto: "Acepto retroalimentación para mejorar:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 79, competencia: "Adaptabilidad", texto: "Me recupero de fracasos:", opciones: ["Muy lento", "Lento", "Normal", "Rápido", "Muy rápido"] },
+            { id: 80, competencia: "Adaptabilidad", texto: "Trabajo bien bajo diferentes estilos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 81, competencia: "Adaptabilidad", texto: "Abrazo el cambio como oportunidad:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 82, competencia: "Adaptabilidad", texto: "Mantengo productividad en transiciones:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            
+            // COMPETENCIA 8: ÉTICA PROFESIONAL (Preguntas 83-93)
+            { id: 83, competencia: "Ética Profesional", texto: "Actúo con honestidad siempre:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 84, competencia: "Ética Profesional", texto: "Respeto la confidencialidad:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 85, competencia: "Ética Profesional", texto: "Reconozco errores propios:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 86, competencia: "Ética Profesional", texto: "Cumplo plazos comprometidos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 87, competencia: "Ética Profesional", texto: "Trato a todos con respeto:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 88, competencia: "Ética Profesional", texto: "Evito conflictos de interés:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 89, competencia: "Ética Profesional", texto: "Denuncio prácticas incorrectas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 90, competencia: "Ética Profesional", texto: "Uso recursos responsablemente:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 91, competencia: "Ética Profesional", texto: "Mantengo integridad bajo presión:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 92, competencia: "Ética Profesional", texto: "Respeto diversidad e inclusión:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 93, competencia: "Ética Profesional", texto: "Actúo según valores institucionales:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            
+            // COMPETENCIA 9: INNOVACIÓN (Preguntas 94-104)
+            { id: 94, competencia: "Innovación", texto: "Propongo ideas nuevas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 95, competencia: "Innovación", texto: "Busco mejoras en procesos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 96, competencia: "Innovación", texto: "Experimento con nuevas soluciones:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 97, competencia: "Innovación", texto: "Aprendo de tendencias del sector:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 98, competencia: "Innovación", texto: "Cuestiono el status quo:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre constructivamente"] },
+            { id: 99, competencia: "Innovación", texto: "Invierto tiempo en creatividad:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 100, competencia: "Innovación", texto: "Implemento ideas innovadoras:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 101, competencia: "Innovación", texto: "Colaboro en proyectos innovadores:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 102, competencia: "Innovación", texto: "Tolero el riesgo calculado:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 103, competencia: "Innovación", texto: "Comparto conocimiento innovador:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 104, competencia: "Innovación", texto: "Evalúo resultados de innovaciones:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            
+            // COMPETENCIA 10: ORIENTACIÓN A RESULTADOS (Preguntas 105-125)
+            { id: 105, competencia: "Orientación a Resultados", texto: "Establezco metas claras:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 106, competencia: "Orientación a Resultados", texto: "Planifico para alcanzar objetivos:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 107, competencia: "Orientación a Resultados", texto: "Monitoreo mi progreso:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 108, competencia: "Orientación a Resultados", texto: "Supero expectativas regularmente:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 109, competencia: "Orientación a Resultados", texto: "Mantengo enfoque en metas:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 110, competencia: "Orientación a Resultados", texto: "Gestiono tiempo efectivamente:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 111, competencia: "Orientación a Resultados", texto: "Priorizo tareas importantes:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 112, competencia: "Orientación a Resultados", texto: "Busco excelencia en mi trabajo:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 113, competencia: "Orientación a Resultados", texto: "Asumo responsabilidad por resultados:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 114, competencia: "Orientación a Resultados", texto: "Celebro logros alcanzados:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 115, competencia: "Orientación a Resultados", texto: "Aprendo de resultados no alcanzados:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 116, competencia: "Orientación a Resultados", texto: "Ajusto estrategias según resultados:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 117, competencia: "Orientación a Resultados", texto: "Comunico resultados claramente:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 118, competencia: "Orientación a Resultados", texto: "Busco retroalimentación sobre resultados:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 119, competencia: "Orientación a Resultados", texto: "Mantengo motivación hacia metas:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 120, competencia: "Orientación a Resultados", texto: "Supero obstáculos para lograr resultados:", opciones: ["Muy mal", "Mal", "Regular", "Bien", "Excelentemente"] },
+            { id: 121, competencia: "Orientación a Resultados", texto: "Documento logros alcanzados:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 122, competencia: "Orientación a Resultados", texto: "Establezco estándares de calidad:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 123, competencia: "Orientación a Resultados", texto: "Evalúo impacto de mi trabajo:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 124, competencia: "Orientación a Resultados", texto: "Busco mejora continua:", opciones: ["Nunca", "Poco", "A veces", "Frecuentemente", "Siempre"] },
+            { id: 125, competencia: "Orientación a Resultados", texto: "Alineo mis metas con las organizacionales:", opciones: ["Nunca", "Rara vez", "A veces", "Frecuentemente", "Siempre"] }
+        ];
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let currentQuestion = 0;
+        let answers = new Array(125).fill(null);
+        let timerInterval;
+        let timeRemaining = 90 * 60; // 90 minutos en segundos
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestion(0);
+            generateQuestionMap();
+            startTimer();
+            updateProgress();
+        });
+
+        // ============================================
+        // CARGAR PREGUNTA
+        // ============================================
+        function loadQuestion(index) {
+            const question = questions[index];
+            document.getElementById('question-number').textContent = index + 1;
+            document.getElementById('question-text').textContent = question.texto;
+            document.getElementById('competency-name').textContent = question.competencia;
+            document.getElementById('current-competency').textContent = question.competencia;
+            
+            // Generar opciones
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            question.opciones.forEach((opcion, i) => {
+                const div = document.createElement('div');
+                div.className = `option-card ${answers[index] === i ? 'selected' : ''}`;
+                div.onclick = () => selectOption(index, i);
+                div.innerHTML = `
+                    <input type="radio" name="question" ${answers[index] === i ? 'checked' : ''}>
+                    <span>${opcion}</span>
+                `;
+                container.appendChild(div);
+            });
+            
+            // Actualizar botones
+            document.getElementById('btn-prev').style.display = index === 0 ? 'none' : 'block';
+            document.getElementById('btn-next').style.display = index === 124 ? 'none' : 'block';
+            document.getElementById('btn-submit').style.display = index === 124 ? 'block' : 'none';
+            
+            // Actualizar mapa
+            updateQuestionMap();
+            
+            currentQuestion = index;
+        }
+
+        // ============================================
+        // SELECCIONAR OPCIÓN
+        // ============================================
+        function selectOption(questionIndex, optionIndex) {
+            answers[questionIndex] = optionIndex;
+            loadQuestion(questionIndex);
+            updateProgress();
+            generateQuestionMap();
+        }
+
+        // ============================================
+        // NAVEGACIÓN
+        // ============================================
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 124) {
+                loadQuestion(currentQuestion + 1);
+            }
+        }
+
+        // ============================================
+        // BARRA DE PROGRESO
+        // ============================================
+        function updateProgress() {
+            const answered = answers.filter(a => a !== null).length;
+            const percentage = (answered / 125) * 100;
+            
+            document.getElementById('progress-text').textContent = `${answered}/125`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+        }
+
+        // ============================================
+        // MAPA DE PREGUNTAS
+        // ============================================
+        function generateQuestionMap() {
+            const container = document.getElementById('question-map-container');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 125; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'question-dot';
+                dot.textContent = i + 1;
+                
+                if (answers[i] !== null) {
+                    dot.classList.add('answered');
+                }
+                if (i === currentQuestion) {
+                    dot.classList.add('current');
+                }
+                if (answers[i] === null && i !== currentQuestion) {
+                    dot.classList.add('pending');
+                }
+                
+                dot.onclick = () => loadQuestion(i);
+                container.appendChild(dot);
+            }
+        }
+
+        function updateQuestionMap() {
+            generateQuestionMap();
+        }
+
+        // ============================================
+        // TEMPORIZADOR
+        // ============================================
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitDiagnostic();
+                }
+            }, 1000);
+        }
+
+        // ============================================
+        // MODAL DE ADVERTENCIA
+        // ============================================
+        function showWarningModal() {
+            document.getElementById('warning-modal').style.display = 'flex';
+        }
+
+        function closeWarningModal() {
+            document.getElementById('warning-modal').style.display = 'none';
+        }
+
+        // ============================================
+        // ENVIAR DIAGNÓSTICO
+        // ============================================
+        function submitDiagnostic() {
+            const unanswered = answers.filter(a => a === null).length;
+            
+            if (unanswered > 0) {
+                if (!confirm(`Tienes ${unanswered} preguntas sin responder. ¿Estás seguro de finalizar?`)) {
+                    return;
+                }
+            }
+            
+            showWarningModal();
+        }
+
+        function confirmSubmit() {
+            // Calcular resultados
+            const results = calculateResults();
+            
+            // Enviar al servidor
+            fetch('/api/guardar-diagnostico', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    answers: answers,
+                    results: results
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/diagnostico/resultados/' + data.resultado_id;
+                } else {
+                    alert('Error al guardar resultados. Inténtalo de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error de conexión. Inténtalo de nuevo.');
+            });
+        }
+
+        // ============================================
+        // CALCULAR RESULTADOS
+        // ============================================
+        function calculateResults() {
+            const competencias = {
+                "Comunicación Oral": 0,
+                "Comunicación Escrita": 0,
+                "Trabajo en Equipo": 0,
+                "Liderazgo": 0,
+                "Resolución de Problemas": 0,
+                "Pensamiento Crítico": 0,
+                "Adaptabilidad": 0,
+                "Ética Profesional": 0,
+                "Innovación": 0,
+                "Orientación a Resultados": 0
+            };
+            
+            const conteo = {
+                "Comunicación Oral": 0,
+                "Comunicación Escrita": 0,
+                "Trabajo en Equipo": 0,
+                "Liderazgo": 0,
+                "Resolución de Problemas": 0,
+                "Pensamiento Crítico": 0,
+                "Adaptabilidad": 0,
+                "Ética Profesional": 0,
+                "Innovación": 0,
+                "Orientación a Resultados": 0
+            };
+            
+            questions.forEach((q, i) => {
+                if (answers[i] !== null) {
+                    competencias[q.competencia] += answers[i];
+                    conteo[q.competencia]++;
+                }
+            });
+            
+            const resultados = {};
+            let total = 0;
+            let maxTotal = 0;
+            
+            for (const [comp, puntaje] of Object.entries(competencias)) {
+                const maxPuntaje = conteo[comp] * 4;
+                const porcentaje = maxPuntaje > 0 ? (puntaje / maxPuntaje) * 100 : 0;
+                resultados[comp] = Math.round(porcentaje);
+                total += puntaje;
+                maxTotal += maxPuntaje;
+            }
+            
+            resultados.puntaje_total = total;
+            resultados.porcentaje_total = maxTotal > 0 ? Math.round((total / maxTotal) * 100) : 0;
+            resultados.nivel = obtenerNivel(resultados.porcentaje_total);
+            
+            return resultados;
+        }
+
+        function obtenerNivel(porcentaje) {
+            if (porcentaje >= 80) return "Experto";
+            if (porcentaje >= 60) return "Avanzado";
+            if (porcentaje >= 40) return "Intermedio";
+            return "Básico";
+        }
+    </script>
+</body>
+</html>

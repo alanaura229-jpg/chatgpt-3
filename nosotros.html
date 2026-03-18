@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - BTU UASLP</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --dark-blue: #003d80;
+            --light-blue: #e3f2fd;
+            --accent-blue: #2196f3;
+            --gold: #C5A059;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        /* Header Styles */
+        .top-bar {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            margin: 0 10px;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+        
+        .btn-login {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 8px 25px;
+        }
+        
+        .btn-login:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        /* About Section */
+        .about-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .about-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-text {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        /* Mission & Vision Cards */
+        .mv-card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            border-top: 4px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .mv-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .mv-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .mv-icon i {
+            font-size: 35px;
+            color: var(--primary-blue);
+        }
+        
+        .mv-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .mv-text {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* Values Section */
+        .values-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .value-card {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-blue);
+        }
+        
+        .value-card:hover .value-icon i,
+        .value-card:hover .value-title,
+        .value-card:hover .value-text {
+            color: white;
+        }
+        
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .value-icon i {
+            font-size: 28px;
+        }
+        
+        .value-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .value-text {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Team Section */
+        .team-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border-color: var(--primary-blue);
+        }
+        
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 4px solid var(--primary-blue);
+        }
+        
+        .team-photo i {
+            font-size: 50px;
+            color: var(--primary-blue);
+        }
+        
+        .team-name {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .team-position {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .team-email {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .team-email a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        
+        .team-email a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 60px 0;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Timeline */
+        .timeline-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background-color: var(--primary-blue);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: var(--gold);
+            border-radius: 50%;
+        }
+        
+        .timeline-year {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-title {
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-text {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Contact Info */
+        .contact-section {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .contact-icon i {
+            font-size: 22px;
+            color: var(--primary-blue);
+        }
+        
+        .contact-info h5 {
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info p {
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Section Title */
+        .section-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--gold);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+        
+        /* Button Styles */
+        .btn-contact {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 25px;
+            padding: 10px 35px;
+        }
+        
+        .btn-contact:hover {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="#" class="text-white me-3"><i class="fas fa-envelope"></i> Correo</a>
+                    <a href="#" class="text-white"><i class="fas fa-book"></i> Directorio</a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" height="30">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <strong style="color: var(--primary-blue);">BTU</strong>
+                <span style="color: #666; font-size: 0.9rem;">| Bolsa de Trabajo Universitaria</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.vacantes') }}">Vacantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.diagnostico') }}">Diagnóstico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.empresas') }}">Empresas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('main.nosotros') }}">Nosotros</a>
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-login ms-3">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-users"></i> Sobre Nosotros</h1>
+                    <p class="lead mb-0">Conoce la historia, misión y equipo de la Bolsa de Trabajo Universitaria</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="badge bg-light text-dark p-3">
+                        <i class="fas fa-university"></i> UASLP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- About Section -->
+        <div class="about-section">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="about-title">
+                        <i class="fas fa-info-circle"></i> ¿Qué es la BTU?
+                    </h2>
+                    <p class="about-text">
+                        La <strong>Bolsa de Trabajo Universitaria (BTU)</strong> de la Universidad Autónoma de San Luis Potosí 
+                        es una plataforma digital diseñada para conectar a estudiantes y egresados potosinos con las 
+                        mejores oportunidades laborales del mercado.
+                    </p>
+                    <p class="about-text">
+                        Nuestro objetivo es facilitar la vinculación entre el sector productivo y la comunidad universitaria, 
+                        promoviendo el desarrollo profesional de nuestros estudiantes mediante herramientas innovadoras 
+                        como el diagnóstico SIDCE, que evalúa competencias clave para el éxito laboral.
+                    </p>
+                    <p class="about-text">
+                        Trabajamos de la mano con más de 150 empresas líderes en diversos sectores, ofreciendo vacantes 
+                        verificadas y oportunidades de crecimiento profesional para nuestra comunidad universitaria.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" class="img-fluid" style="max-width: 400px;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mission & Vision -->
+        <h2 class="section-title">
+            <i class="fas fa-bullseye"></i> Misión y Visión
+        </h2>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="mv-card">
+                    <div class="mv-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="mv-title">Misión</h3>
+                    <p class="mv-text">
+                        Facilitar la inserción laboral de estudiantes y egresados de la UASLP mediante una plataforma 
+                        integral que conecta talento universitario con oportunidades profesionales de calidad, 
+                        fomentando el desarrollo de competencias y la vinculación efectiva con el sector productivo.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mv-card">
+                    <div class="mv-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="mv-title">Visión</h3>
+                    <p class="mv-text">
+                        Ser la plataforma de vinculación laboral universitaria más reconocida de la región centro del país, 
+                        reconocida por su excelencia en la conexión entre talento académico y necesidades empresariales, 
+                        contribuyendo al desarrollo económico y social de San Luis Potosí y México.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Values -->
+        <h2 class="section-title">
+            <i class="fas fa-heart"></i> Nuestros Valores
+        </h2>
+        <div class="values-section mb-5">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="value-title">Integridad</h4>
+                        <p class="value-text">Actuamos con honestidad y transparencia en todos nuestros procesos</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 class="value-title">Compromiso</h4>
+                        <p class="value-text">Dedicación total al servicio de nuestra comunidad universitaria</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4 class="value-title">Innovación</h4>
+                        <p class="value-text">Búsqueda constante de mejoras en nuestros servicios y procesos</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h4 class="value-title">Colaboración</h4>
+                        <p class="value-text">Trabajo en equipo con estudiantes, egresados y empresas</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h4 class="value-title">Excelencia</h4>
+                        <p class="value-text">Compromiso con la calidad en cada servicio que ofrecemos</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4 class="value-title">Confidencialidad</h4>
+                        <p class="value-text">Protección de datos personales bajo normativa institucional</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number">2,340</div>
+                            <div class="stat-label">Estudiantes Registrados</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Empresas Aliadas</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number">89%</div>
+                            <div class="stat-label">Tasa de Colocación</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number">5+ Años</div>
+                            <div class="stat-label">De Experiencia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timeline -->
+        <h2 class="section-title">
+            <i class="fas fa-history"></i> Nuestra Historia
+        </h2>
+        <div class="timeline-section mb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2019</div>
+                        <div class="timeline-title">Fundación de la BTU</div>
+                        <div class="timeline-text">
+                            Se establece la Bolsa de Trabajo Universitaria como iniciativa de la coordinación de 
+                            vinculación laboral de la UASLP.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-title">Implementación del SIDCE</div>
+                        <div class="timeline-text">
+                            Se incorpora el Sistema de Diagnóstico de Competencias Empresariales para evaluar 
+                            las habilidades de los estudiantes.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-title">Plataforma Digital</div>
+                        <div class="timeline-text">
+                            Lanzamiento de la plataforma web moderna que permite la conexión directa entre 
+                            estudiantes y empleadores.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2023</div>
+                        <div class="timeline-title">Expansión Empresarial</div>
+                        <div class="timeline-text">
+                            Se alcanza la cifra de 100 empresas registradas, ampliando las oportunidades 
+                            para nuestra comunidad universitaria.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-title">Certificación de Calidad</div>
+                        <div class="timeline-text">
+                            La BTU recibe reconocimiento institucional por su contribución al desarrollo 
+                            profesional de los egresados UASLP.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-title">Proyección Futura</div>
+                        <div class="timeline-text">
+                            Planes de expansión a nivel nacional y alianzas con universidades hermanas 
+                            para ampliar el alcance de la plataforma.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team -->
+        <h2 class="section-title">
+            <i class="fas fa-user-tie"></i> Nuestro Equipo
+        </h2>
+        <div class="team-section mb-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Dr. Juan Pérez García</h4>
+                        <p class="team-position">Coordinador General</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:jperez@uaslp.mx">jperez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Mtra. María Rodríguez</h4>
+                        <p class="team-position">Coordinadora de Vinculación</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:mrodriguez@uaslp.mx">mrodriguez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Lic. Carlos Hernández</h4>
+                        <p class="team-position">Responsable de Empresas</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:chernandez@uaslp.mx">chernandez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Dra. Ana Martínez</h4>
+                        <p class="team-position">Coordinadora SIDCE</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:amartinez@uaslp.mx">amartinez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Ing. Luis Sánchez</h4>
+                        <p class="team-position">Soporte Técnico</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:lsanchez@uaslp.mx">lsanchez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="team-name">Lic. Patricia López</h4>
+                        <p class="team-position">Atención a Estudiantes</p>
+                        <p class="team-email">
+                            <i class="fas fa-envelope"></i> 
+                            <a href="mailto:plopez@uaslp.mx">plopez@uaslp.mx</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <h2 class="section-title">
+            <i class="fas fa-map-marker-alt"></i> Contacto
+        </h2>
+        <div class="contact-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Dirección</h5>
+                            <p>Av. Manuel Nava #201, Zona Universitaria<br>San Luis Potosí, S.L.P. C.P. 78290</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Teléfono</h5>
+                            <p>(444) 826 2345<br>Lunes a Viernes 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Correo Electrónico</h5>
+                            <p>btu@uaslp.mx<br>soporte@btu.uaslp.mx</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Horario de Atención</h5>
+                            <p>Lunes a Viernes: 9:00 AM - 6:00 PM<br>Sábados: 9:00 AM - 2:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Sitio Web</h5>
+                            <p>www.uaslp.mx<br>btu.uaslp.mx</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Redes Sociales</h5>
+                            <p>
+                                <a href="#" class="me-2"><i class="fab fa-facebook"></i> Facebook</a>
+                                <a href="#" class="me-2"><i class="fab fa-twitter"></i> Twitter</a>
+                                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-contact">
+                    <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><img src="https://www.uaslp.mx/sites/all/themes/uaslp/images/logo-uaslp.png" alt="UASLP" height="40" class="me-2"> BTU</h5>
+                    <p class="small">Bolsa de Trabajo Universitaria<br>Universidad Autónoma de San Luis Potosí</p>
+                    <p class="small text-white-50">Vinculación Laboral y Desarrollo Profesional</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('main.vacantes') }}">Vacantes</a></li>
+                        <li><a href="{{ url_for('main.diagnostico') }}">Diagnóstico SIDCE</a></li>
+                        <li><a href="{{ url_for('main.empresas') }}">Empresas</a></li>
+                        <li><a href="{{ url_for('main.nosotros') }}">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Av. Manuel Nava #201, Zona Universitaria</li>
+                        <li><i class="fas fa-phone me-2"></i> (444) 826 2345</li>
+                        <li><i class="fas fa-envelope me-2"></i> btu@uaslp.mx</li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0 small">© 2024 BTU UASLP - Siempre Autónoma, Siempre UASLP</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

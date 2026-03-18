@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel — BTU UASLP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue:#003366; --cyan:#00A9E0; --light:#F5F5F5;
+            --white:#fff; --text:#333; --border:#E0E0E0;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:var(--light); }
+        .topbar { background:var(--blue); color:#fff; padding:14px 30px; display:flex; justify-content:space-between; align-items:center; }
+        .topbar .brand { font-size:1.3em; font-weight:700; text-decoration:none; color:#fff; }
+        .topbar nav a { color:#fff; text-decoration:none; margin-left:18px; font-size:.9em; opacity:.85; }
+        .topbar nav a:hover { opacity:1; }
+        .layout { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 54px); }
+        .sidebar { background:var(--white); border-right:1px solid var(--border); padding:24px 0; }
+        .sidebar .user-card { text-align:center; padding:0 20px 20px; border-bottom:1px solid var(--border); margin-bottom:10px; }
+        .sidebar .avatar { width:64px; height:64px; border-radius:50%; background:var(--blue); color:#fff; font-size:1.8em; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+        .sidebar .user-name { font-weight:700; color:var(--blue); font-size:.95em; }
+        .sidebar .user-type { font-size:.78em; color:#888; text-transform:capitalize; }
+        .sidebar a { display:flex; align-items:center; gap:10px; padding:11px 22px; color:var(--text); text-decoration:none; font-size:.9em; transition:background .15s; }
+        .sidebar a:hover, .sidebar a.active { background:var(--light); color:var(--blue); font-weight:600; border-left:3px solid var(--cyan); }
+        .sidebar a i { width:16px; color:var(--cyan); }
+        .main { padding:28px 30px; }
+        .page-title { font-size:1.4em; color:var(--blue); margin-bottom:20px; }
+        .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-bottom:28px; }
+        .stat-card { background:var(--white); border-radius:8px; padding:22px 20px; box-shadow:0 2px 8px rgba(0,0,0,.07); border-top:3px solid var(--cyan); }
+        .stat-card .num { font-size:2em; font-weight:700; color:var(--blue); }
+        .stat-card .label { font-size:.82em; color:#777; margin-top:4px; }
+        .section { background:var(--white); border-radius:8px; padding:22px 24px; box-shadow:0 2px 8px rgba(0,0,0,.07); margin-bottom:22px; }
+        .section h3 { color:var(--blue); font-size:1.05em; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+        table { width:100%; border-collapse:collapse; font-size:.88em; }
+        th { background:var(--light); color:var(--blue); padding:10px 12px; text-align:left; font-weight:700; }
+        td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text); }
+        tr:last-child td { border:none; }
+        .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:.75em; font-weight:700; }
+        .badge-pendiente { background:#fff3cd; color:#856404; }
+        .badge-aceptado  { background:#d4edda; color:#155724; }
+        .badge-rechazado { background:#fde8e8; color:#721c24; }
+        .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:5px; border:none; cursor:pointer; font-size:.88em; font-weight:600; text-decoration:none; transition:all .2s; }
+        .btn-primary { background:var(--blue); color:#fff; }
+        .btn-primary:hover { background:#0055A5; }
+        .btn-sm { padding:5px 12px; font-size:.82em; }
+        .alert { padding:10px 16px; border-radius:6px; margin-bottom:16px; font-size:.9em; }
+        .alert-warning { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+        @media(max-width:700px) { .layout { grid-template-columns:1fr; } .sidebar { display:none; } }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="{{ url_for('main.index') }}" class="brand"><i class="fas fa-university"></i> BTU — UASLP</a>
+    <nav>
+        <a href="{{ url_for('main.perfil') }}"><i class="fas fa-user"></i> Mi Perfil</a>
+        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </nav>
+</div>
+
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="user-card">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div class="user-name">{{ current_user.nombre_completo() }}</div>
+            <div class="user-type">{{ current_user.tipo_usuario | replace('_',' ') }}</div>
+        </div>
+        <a href="{{ url_for('main.dashboard') }}" class="active"><i class="fas fa-home"></i> Inicio</a>
+        <a href="{{ url_for('main.vacantes') }}"><i class="fas fa-briefcase"></i> Vacantes</a>
+        <a href="{{ url_for('main.diagnostico') }}"><i class="fas fa-chart-line"></i> Diagnóstico SIDCE</a>
+        <a href="{{ url_for('main.perfil') }}"><i class="fas fa-user-edit"></i> Mi Perfil / CV</a>
+        <a href="#historial"><i class="fas fa-history"></i> Historial de Postulaciones</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <h2 class="page-title">Bienvenido/a, {{ current_user.nombre }} <i class="fas fa-hand-wave" style="color:var(--cyan);font-size:.75em;"></i></h2>
+
+        {% if not tiene_diagnostico %}
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Completa tu diagnóstico SIDCE</strong> para mejorar tu perfil y recibir vacantes más relevantes.
+            <a href="{{ url_for('main.diagnostico') }}" style="color:#856404;font-weight:700;margin-left:8px;">Ir al diagnóstico →</a>
+        </div>
+        {% endif %}
+
+        <!-- Stats -->
+        <div class="cards">
+            <div class="stat-card">
+                <div class="num">{{ vacantes|length }}</div>
+                <div class="label">Vacantes disponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">{{ historial|length }}</div>
+                <div class="label">Postulaciones realizadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">{% if current_user.cv_filename %}<i class="fas fa-check" style="color:green;font-size:.8em;"></i>{% else %}<i class="fas fa-times" style="color:#dc3545;font-size:.8em;"></i>{% endif %}</div>
+                <div class="label">CV cargado</div>
+            </div>
+        </div>
+
+        <!-- Vacantes recientes -->
+        <div class="section">
+            <h3><i class="fas fa-briefcase"></i> Vacantes Disponibles</h3>
+            {% if vacantes %}
+            <table>
+                <thead>
+                    <tr><th>Vacante</th><th>Empresa</th><th>Modalidad</th><th>Acción</th></tr>
+                </thead>
+                <tbody>
+                    {% for v in vacantes[:10] %}
+                    <tr>
+                        <td><strong>{{ v.titulo }}</strong></td>
+                        <td>{{ v.empleador.nombre_empresa or v.empleador.nombre }}</td>
+                        <td>{{ v.modalidad | capitalize }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('main.postular', vacante_id=v.id) }}" style="display:inline;">
+                                <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-paper-plane"></i> Postularme</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color:#888;">No hay vacantes disponibles en este momento.</p>
+            {% endif %}
+        </div>
+
+        <!-- Historial -->
+        <div class="section" id="historial">
+            <h3><i class="fas fa-history"></i> Historial de Postulaciones</h3>
+            {% if historial %}
+            <table>
+                <thead>
+                    <tr><th>Vacante</th><th>Empresa</th><th>Fecha</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    {% for p in historial %}
+                    <tr>
+                        <td>{{ p.vacante.titulo }}</td>
+                        <td>{{ p.vacante.empleador.nombre_empresa or p.vacante.empleador.nombre }}</td>
+                        <td>{{ p.fecha_postulacion.strftime('%d/%m/%Y') }}</td>
+                        <td><span class="badge badge-{{ p.estado }}">{{ p.estado | capitalize }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color:#888;">Aún no te has postulado a ninguna vacante.</p>
+            {% endif %}
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Coordinación — BTU UASLP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --blue:#003366; --cyan:#00A9E0; --light:#F5F5F5; --white:#fff; --text:#333; --border:#E0E0E0; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:var(--light); }
+        .topbar { background:var(--blue); color:#fff; padding:14px 30px; display:flex; justify-content:space-between; align-items:center; }
+        .topbar .brand { font-size:1.3em; font-weight:700; text-decoration:none; color:#fff; }
+        .topbar nav a { color:#fff; text-decoration:none; margin-left:18px; font-size:.9em; opacity:.85; }
+        .layout { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 54px); }
+        .sidebar { background:var(--white); border-right:1px solid var(--border); padding:24px 0; }
+        .sidebar .user-card { text-align:center; padding:0 20px 20px; border-bottom:1px solid var(--border); margin-bottom:10px; }
+        .sidebar .avatar { width:64px; height:64px; border-radius:50%; background:var(--blue); color:#fff; font-size:1.6em; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+        .sidebar a { display:flex; align-items:center; gap:10px; padding:11px 22px; color:var(--text); text-decoration:none; font-size:.9em; }
+        .sidebar a:hover { background:var(--light); color:var(--blue); font-weight:600; border-left:3px solid var(--cyan); }
+        .sidebar a i { width:16px; color:var(--cyan); }
+        .main { padding:28px 30px; }
+        .page-title { font-size:1.4em; color:var(--blue); margin-bottom:20px; }
+        .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-bottom:28px; }
+        .stat-card { background:var(--white); border-radius:8px; padding:22px 20px; box-shadow:0 2px 8px rgba(0,0,0,.07); border-top:3px solid var(--cyan); }
+        .stat-card .num { font-size:2em; font-weight:700; color:var(--blue); }
+        .stat-card .label { font-size:.82em; color:#777; margin-top:4px; }
+        .section { background:var(--white); border-radius:8px; padding:22px 24px; box-shadow:0 2px 8px rgba(0,0,0,.07); margin-bottom:22px; }
+        .section h3 { color:var(--blue); font-size:1.05em; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+        table { width:100%; border-collapse:collapse; font-size:.88em; }
+        th { background:var(--light); color:var(--blue); padding:10px 12px; text-align:left; font-weight:700; }
+        td { padding:10px 12px; border-bottom:1px solid var(--border); }
+        tr:last-child td { border:none; }
+        .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:.75em; font-weight:700; }
+        .badge-alumno   { background:#cfe2ff; color:#084298; }
+        .badge-egresado { background:#d1e7dd; color:#0a3622; }
+        input[type=text] { padding:8px 12px; border:1.5px solid var(--border); border-radius:5px; font-size:.9em; width:260px; }
+        .search-bar { margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+        .search-bar select { padding:8px 12px; border:1.5px solid var(--border); border-radius:5px; font-size:.9em; }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="{{ url_for('main.index') }}" class="brand"><i class="fas fa-university"></i> BTU — UASLP</a>
+    <nav>
+        <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </nav>
+</div>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="user-card">
+            <div class="avatar"><i class="fas fa-university"></i></div>
+            <div style="font-weight:700;color:var(--blue);font-size:.9em;">{{ current_user.nombre_coord or 'Coordinación' }}</div>
+            <div style="font-size:.75em;color:#888;">{{ current_user.tipo_entidad_coord | capitalize if current_user.tipo_entidad_coord else 'Coordinación' }}</div>
+        </div>
+        <a href="{{ url_for('main.dashboard') }}"><i class="fas fa-home"></i> Panel</a>
+        <a href="{{ url_for('main.perfil') }}"><i class="fas fa-user-edit"></i> Mi perfil</a>
+    </aside>
+
+    <main class="main">
+        <h2 class="page-title">Panel de Coordinación — {{ current_user.nombre_coord or current_user.nombre }}</h2>
+
+        <div class="cards">
+            <div class="stat-card">
+                <div class="num">{{ usuarios|length }}</div>
+                <div class="label">Usuarios registrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">{{ usuarios|selectattr('tipo_usuario','equalto','alumno')|list|length }}</div>
+                <div class="label">Alumnos</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">{{ usuarios|selectattr('tipo_usuario','equalto','egresado')|list|length }}</div>
+                <div class="label">Egresados</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">{{ usuarios|selectattr('activo')|list|length }}</div>
+                <div class="label">Cuentas activas</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3><i class="fas fa-users"></i> Directorio de Alumnos y Egresados</h3>
+
+            <div class="search-bar">
+                <input type="text" id="buscador" placeholder="Buscar por nombre o carrera..." oninput="filtrar()">
+                <select id="filtroTipo" onchange="filtrar()">
+                    <option value="">Todos</option>
+                    <option value="alumno">Alumnos</option>
+                    <option value="egresado">Egresados</option>
+                </select>
+            </div>
+
+            <table id="tablaUsuarios">
+                <thead>
+                    <tr><th>Nombre</th><th>Tipo</th><th>Carrera</th><th>Facultad</th><th>Semestre</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr class="fila-usuario" data-nombre="{{ u.nombre_completo()|lower }}" data-tipo="{{ u.tipo_usuario }}" data-carrera="{{ (u.carrera or '')|lower }}">
+                        <td>{{ u.nombre_completo() }}</td>
+                        <td><span class="badge badge-{{ u.tipo_usuario }}">{{ u.tipo_usuario | capitalize }}</span></td>
+                        <td>{{ u.carrera or '—' }}</td>
+                        <td>{{ u.facultad or '—' }}</td>
+                        <td>{{ u.semestre or '—' }}</td>
+                        <td>{% if u.activo %}<span style="color:green;font-weight:700;">Activa</span>{% else %}<span style="color:#dc3545;font-weight:700;">Suspendida</span>{% endif %}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" style="color:#888;text-align:center;">No hay usuarios registrados aún.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+function filtrar() {
+    const texto = document.getElementById('buscador').value.toLowerCase();
+    const tipo  = document.getElementById('filtroTipo').value;
+    document.querySelectorAll('.fila-usuario').forEach(fila => {
+        const nombreMatch   = fila.dataset.nombre.includes(texto) || fila.dataset.carrera.includes(texto);
+        const tipoMatch     = !tipo || fila.dataset.tipo === tipo;
+        fila.style.display  = (nombreMatch && tipoMatch) ? '' : 'none';
+    });
+}
+</script>
+</body>
+</html>
